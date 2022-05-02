@@ -57,7 +57,7 @@ export const AmazonProvider = ({ children }) => {
                await getAssets()
             }
         })()
-    }, [isWeb3Enabled, assets])
+    }, [isWeb3Enabled, assetsData])
 
     return (
         <AmazonContext.Provider
