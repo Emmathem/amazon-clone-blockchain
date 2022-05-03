@@ -93,7 +93,7 @@ const Sidebar = () => {
                                 width={30}
                                 className={styles.amazonLogo}
                             />
-                            My Amazon <br /> Brand
+                            My Amazon Brand
                         </div>
                     </Link>
                     <div className={styles.menuItem}>
