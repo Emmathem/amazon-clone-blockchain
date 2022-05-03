@@ -24,4 +24,5 @@ a {
 body {
   font-family: 'Ubuntu', sans-serif;
   background-color: #fff;
+  transition: ease all 0.5s;
 }

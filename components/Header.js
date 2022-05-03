@@ -11,8 +11,10 @@ import {
     ModalTransition,
 } from 'react-simple-hook-modal';
 import 'react-simple-hook-modal/dist/styles.css'
+import BuyModal from './BuyModal';
+import { AmazonContext } from '../context/AmazonContext';
 
-const balance = '99'
+// const balance = '99'
 
 const Header = () => {
     const styles = {
@@ -25,7 +27,9 @@ const Header = () => {
         coins: `ml-[10px]`
     };
 
-    const { openModal, isModalOpen } = useModal()
+    const { openModal, isModalOpen, closeModal } = useModal()
+
+    const { balance } = useContext(AmazonContext);
     return (
         <div className={styles.container}>
             <div className={styles.logo}>
@@ -42,27 +46,27 @@ const Header = () => {
                     type="text"
                     placeholder="Search Your Assets here..."
                     className={styles.searchInput}
-                    />
-                    <IoMdSearch fontSize={20} />
+                />
+                <IoMdSearch fontSize={20} />
             </div>
             <div className={styles.menu}>
                 <div className={styles.menuItem}>New Releases</div>
                 <div className={styles.menuItem}>Featured</div>
-                { balance ? (
+                {balance ? (
                     <div className={(styles.balance, styles.menuItem)} onClick={openModal}>
                         {balance}
                         <FaCoins className={styles.coins} />
-                        <Modal isOpen={isModalOpen} transition={ModalTransition.SCALE}>
-                            {/* <BuyModal close={closeModal} buyTokens = {buyToken} /> */}
+                        <Modal isOpen={isModalOpen} transition={ModalTransition.NONE}>
+                            <BuyModal close={closeModal} />
                         </Modal>
                     </div>
                 ) : (
                     <div className={(styles.balance, styles.menuItem)}
-                    onClick={openModal}
+                        onClick={openModal}
                     >
                         0 AC <FaCoins className={styles.coins} />
-                        <Modal isOpen={isModalOpen} transition={ModalTransition.SCALE}>
-                            {/* <BuyModal close={closeModal} buyTokens = {buyToken} /> */}
+                        <Modal isOpen={isModalOpen} transition={ModalTransition.NONE}>
+                            <BuyModal close={closeModal} />
                         </Modal>
                     </div>
                 )}

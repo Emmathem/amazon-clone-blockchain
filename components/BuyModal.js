@@ -6,10 +6,21 @@ import Link from 'next/link'
 
 const BuyModal = ({ close }) => {
 
-  const styles = {};
+  const styles = {
+    container: `h-full w-full flex flex-col`,
+    loaderContainer: `w-full h-full flex items-center justify-center`,
+    closeX: `h-[50px] w-full flex items-center justify-end mb-[20px]`,
+    title: `text-3xl font-bold flex flex-1 items-center mt-[20px] justify-center mb-[20px]`,
+    content: `flex w-full mb-[30px] text-xl justify-center`,
+    inputBox: `w-full h-full flex items-center justify-center bg-[#f7f6f2] focus:outline-none`,
+    input: `w-[350px] h-[50px] bg-[#f7f6f2] rounded-lg p-[10px] flex mx-auto`,
+    price: `w-full h-full flex justify-center items-center mt-[20px] font-bold text-3xl`,
+    buyBtn: `w-[20%] h-[50px] bg-[#000] mt-[40px] rounded-lg p-[10px] flex mx-auto text-white justify-center cursor-pointer`,
+    success: `w-full h-full flex items-center justify-center font-bolder text-xl mt-[20px]`,
+    etherscan: `w-ful h-full flex justify-center items-center text-green-500 text-2xl mt-[20px] font-bold cursor-pointer`
+  };
 
   const {
-    balance,
     setTokenAmount,
     tokenAmount,
     setIsLoading,
@@ -28,6 +39,10 @@ const BuyModal = ({ close }) => {
     price = price.toFixed(4);
     setAmountDue(price);
   }
+  useEffect(() => {
+    calculatePrice()
+  }, [tokenAmount])
+  
   return (
     <div className={styles.container}>
       {isLoading ? (
@@ -56,7 +71,7 @@ const BuyModal = ({ close }) => {
           </div>
           <div className={styles.input}>
             <input
-              type={text}
+              type="text"
               placeholder="Amount..."
               className={styles.inputBox}
               onChange={e => setTokenAmount(e.target.value)}

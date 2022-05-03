@@ -1,7 +1,8 @@
 const hre = require('hardhat');
 
 async function main() {
-    const amazonCoinFactory = await hre.ether.getContractFactory('Amazon Coin')
+    console.log('ether', hre.ether);
+    const amazonCoinFactory = await hre.ether.getContractFactory('AmazonCoin')
     const amazonCoin = await amazonCoinFactory.deploy("Amazon Coin");
 
     await amazonCoin.deployed();

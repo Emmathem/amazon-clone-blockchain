@@ -31,6 +31,27 @@ export const AmazonProvider = ({ children }) => {
         isLoading: userDetailsLoading,
     } = useMoralisQuery('assets')
 
+    const getBalance = async () => {
+        try {
+            if (!isAuthenticated || !currentAccount) return
+            const options = {
+                contractAddress: amazonCoinAddress,
+                functionName: 'balanceOf',
+                abi: amazonAbi,
+                params: {
+                    account: currentAccount
+                },
+            }
+            if (isWeb3Enabled) {
+                const response =  await Moralis.executeFunction(options)
+                console.log('wbrr', response);
+                setBalance(response.toString())
+            }
+        } catch(e) {
+            console.log(e, 'errot')
+        }
+    }
+
     useEffect(() => {
         ;(async() => {
             if (isAuthenticated) {
@@ -41,7 +62,7 @@ export const AmazonProvider = ({ children }) => {
                 setCurrentAccount(account);
             }
         })()
-    }, [isAuthenticated, user, username, currentAccount])
+    }, [isAuthenticated, user, username, currentAccount, getBalance])
 
     const handleSubmit = () => {
         if (user) {
@@ -50,26 +71,6 @@ export const AmazonProvider = ({ children }) => {
                 user.save()
             } else console.log('Can\'t set nickname')
         } else console.log('no user')
-    }
-
-    const getBalance = () => {
-        try {
-            if (!isAuthenticated || !currentAccount) return
-            const options = {
-                contractAddress: amazonCoinAddress,
-                functionName: 'balanceOf',
-                abi: amazonAbi,
-                params: {
-                    account: currentAccount
-                }
-            }
-            if (isWeb3Enabled) {
-                const response =  await Moralis.executeFunction(options)
-                setBalance(response.toString())
-            }
-        } catch(e) {
-            console.log(e)
-        }
     }
 
     const buyTokens = async () => {
@@ -91,10 +92,10 @@ export const AmazonProvider = ({ children }) => {
         }
 
         const transaction = await Moralis.executeFunction(options);
-        const receipt = transaction.wait(4);
+        const receipt = await transaction.wait(4);
         setIsLoading(false);
-        console.log(receipt);
-        setEtherscanLink(`https://rinkeby.etherscan.io/tx${receipt.transactionHash}`)
+        console.log(receipt, 'receipt');
+        setEtherscanLink(`https://rinkeby.etherscan.io/tx/${receipt.transactionHash}`)
     };
     const getAssets = async() => {
         try {
@@ -111,6 +112,7 @@ export const AmazonProvider = ({ children }) => {
             }
         })()
     }, [isWeb3Enabled, assetsData])
+    console.log(balance,  'balance')
 
     return (
         <AmazonContext.Provider
